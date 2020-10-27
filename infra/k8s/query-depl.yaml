@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: query
+  template:
+    metadata:
+      labels:
+        app: query
+    spec:
+      containers:
+        - name: query
+          imagePullPolicy: Never
+          image: georgesirghe/query
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-srv
+spec:  
+  selector:
+    app: query #this must be the same as the matchLabels app
+  type: ClusterIP #the default is also clusteIP but I wanted to write it down so I know for sure
+  ports:
+    - name: query
+      protocol: TCP
+      port: 4002
+      targetPort: 4002

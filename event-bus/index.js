@@ -13,13 +13,14 @@ app.post('/events', (req, res) => {
     events.push(event);
     
     // posts
-    axios.post('http://localhost:4000/events', event);
+    // posts-clusterip-srv is the kubernetes service that we are trying to reach out to
+    axios.post('http://posts-clusterip-srv:4000/events', event);
     // comments
-    axios.post('http://localhost:4001/events', event);
+    axios.post('http://comments-srv:4001/events', event);
     // query
-    axios.post('http://localhost:4002/events', event);
+    axios.post('http://query-srv:4002/events', event);
     // moderation
-    axios.post('http://localhost:4003/events', event);
+    axios.post('http://moderation-srv:4003/events', event);
 
     res.send({ status: 'OK'});
 });

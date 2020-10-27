@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comments-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comments
+  template:
+    metadata:
+      labels:
+        app: comments
+    spec:
+      containers:
+        - name: comments
+          imagePullPolicy: Never
+          image: georgesirghe/comments
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-srv
+spec:  
+  selector:
+    app: comments #this must be the same as the matchLabels app
+  type: ClusterIP #the default is also clusteIP but I wanted to write it down so I know for sure
+  ports:
+    - name: comments
+      protocol: TCP
+      port: 4001 # it is the port that is listed in the index.js where the express app is listening to
+      targetPort: 4001

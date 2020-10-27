@@ -11,7 +11,8 @@ app.post('/events', async (req, res) => {
     if (type === 'CommentCreated') {
         const status = data.content.includes('orange') ? 'rejected' : 'approved';
 
-        await axios.post('http://localhost:4005/events', {
+        // event-bus-srv is the kubernetes service that we want to reach to
+        await axios.post('http://event-bus-srv:4005/events', {
             type: 'CommentModerated',
             data: {
                 id: data.id,
