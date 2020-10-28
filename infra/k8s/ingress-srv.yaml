@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata: 
+  name: ingress-srv
+  annotations:
+    # it will search for the service that has this annotation
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    # the host rule is just for the app hosted at posts.com, we have to trick our local machine to think that localhost is posts.com
+    - host: posts.com
+      http:
+        paths:
+          - path: /posts/create
+            backend:
+              # this is the name from the posts-depl.yaml and the port from the posts service and that is also set in posts-depl.yaml
+              serviceName: posts-clusterip-srv
+              servicePort: 4000
+          - path: /posts
+            backend:
+              serviceName: query-srv
+              servicePort: 4002
+          - path: /posts/?(.*)/comments
+            backend:
+              serviceName: comments-srv
+              servicePort: 4001
+          - path: /?(.*)
+            backend: 
+              serviceName: client-srv
+              servicePort: 3000

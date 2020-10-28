@@ -9,3 +9,4 @@ For the application to work, the npm install command must be executed in every m
 Docker 
 Kubernets
 Ingress-NGINX (NOT KUBERNETS-NGINX)
+Skaffold for developing purposes. It will help update the code in a running pod
